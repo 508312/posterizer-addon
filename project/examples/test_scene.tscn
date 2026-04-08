@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://47ml7d43wemd"]
+
+[ext_resource type="Material" uid="uid://diek7q6d3ui13" path="res://examples/test_mat_fullres.tres" id="1_g3kdf"]
+[ext_resource type="Material" uid="uid://c62g111ixbsit" path="res://examples/test_mat_lut.tres" id="1_iqljj"]
+[ext_resource type="Shader" uid="uid://ci4627oqeoncj" path="res://addons/posterizer/src/posterizer_slow_fullres_canvas.gdshader" id="1_mjlwq"]
+[ext_resource type="PackedScene" uid="uid://bh0ltk032ullu" path="res://examples/japanese_forest/scene.gltf" id="2_r0otj"]
+[ext_resource type="Shader" uid="uid://bixg1gro3b067" path="res://addons/posterizer/src/posterizer_lut_canvas.gdshader" id="3_5hm8q"]
+[ext_resource type="ImageTexture3D" uid="uid://cmtarqoafs7jb" path="res://examples/crashtest.tres" id="4_nu2q2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mjlwq"]
+shader = ExtResource("1_mjlwq")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2netj"]
+shader = ExtResource("3_5hm8q")
+shader_parameter/palette_lut = ExtResource("4_nu2q2")
+
+[sub_resource type="QuadMesh" id="QuadMesh_uhqqe"]
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="Environment" id="Environment_g3kdf"]
+background_mode = 1
+background_color = Color(0.26180813, 0.36685577, 0.7475543, 1)
+background_energy_multiplier = 0.6
+
+[sub_resource type="SphereMesh" id="SphereMesh_uhqqe"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ia1lp"]
+albedo_color = Color(0, 1, 0.34509805, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_g3kdf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mjlwq"]
+albedo_color = Color(1, 0.4862745, 1, 1)
+
+[node name="Node3D" type="Node3D" unique_id=1355957724]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=218838158]
+
+[node name="fr" type="ColorRect" parent="CanvasLayer" unique_id=1686625801]
+visible = false
+material = SubResource("ShaderMaterial_mjlwq")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="lut" type="ColorRect" parent="CanvasLayer" unique_id=1248404304]
+visible = false
+material = SubResource("ShaderMaterial_2netj")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1351296042]
+transform = Transform3D(0.99534976, -0.0019407794, 0.09630735, 0.013429966, 0.99282825, -0.11879314, -0.0953861, 0.119534135, 0.9882374, 0.7762635, 0.85685194, 2.9063766)
+fov = 64.9
+
+[node name="fr" type="MeshInstance3D" parent="Camera3D" unique_id=1669373396]
+transform = Transform3D(1, 0, 7.450581e-09, 0, 1, -7.450581e-09, 0, 0, 0.99999994, 0, 0, -0.099999905)
+visible = false
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_uhqqe")
+surface_material_override/0 = ExtResource("1_g3kdf")
+
+[node name="lut" type="MeshInstance3D" parent="Camera3D" unique_id=1130753344]
+transform = Transform3D(1, 0, 7.450581e-09, 0, 1, -2.2351742e-08, 0, 0, 0.99999994, 0, -3.5762787e-07, -0.10000038)
+visible = false
+mesh = SubResource("QuadMesh_uhqqe")
+surface_material_override/0 = ExtResource("1_iqljj")
+
+[node name="Sketchfab_Scene" parent="." unique_id=1454471119 instance=ExtResource("2_r0otj")]
+transform = Transform3D(1, 2.3283064e-10, 4.656613e-10, -4.656613e-10, 0.9999999, -2.9802322e-08, -4.656613e-10, 2.9802322e-08, 1, 0, 0, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=485762147]
+transform = Transform3D(-0.14047252, -0.945072, 0.29513794, 0.73700196, 0.099241525, 0.6685651, -0.6611321, 0.31143224, 0.6825792, 25.754814, 23.151176, -0.7016535)
+visible = false
+shadow_enabled = true
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=377487080]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.52519786, 1.2890332, -0.7016535)
+light_energy = 3.297
+shadow_enabled = true
+omni_range = 11.266326
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1471434622]
+environment = SubResource("Environment_g3kdf")
+
+[node name="sphere" type="MeshInstance3D" parent="." unique_id=1693776000]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5439408, 2.089257, -1.8271288)
+mesh = SubResource("SphereMesh_uhqqe")
+surface_material_override/0 = SubResource("StandardMaterial3D_ia1lp")
+
+[node name="torus" type="MeshInstance3D" parent="." unique_id=756534714]
+transform = Transform3D(0.6746439, -0.5324442, -0.51123273, -0.074665464, 0.6398153, -0.7648934, 0.7343574, 0.5542021, 0.39189225, 2.9590266, 2.0676274, -1.2320604)
+mesh = SubResource("TorusMesh_g3kdf")
+surface_material_override/0 = SubResource("StandardMaterial3D_mjlwq")

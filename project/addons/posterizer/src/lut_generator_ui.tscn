@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://bgug6rdygs63r"]
+
+[ext_resource type="Script" uid="uid://chkx5pukpe3gc" path="res://addons/posterizer/src/lut_generator_ui.gd" id="1_6sif8"]
+
+[node name="PosterizerLutGenerator" type="Control" unique_id=1218793708]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6sif8")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=87238368]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 217.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=2129175307]
+layout_mode = 2
+text = "Input Image path"
+
+[node name="Input" type="HBoxContainer" parent="VBoxContainer" unique_id=50256786]
+layout_mode = 2
+
+[node name="InputLineEdit" type="LineEdit" parent="VBoxContainer/Input" unique_id=1192147233]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="InputButton" type="Button" parent="VBoxContainer/Input" unique_id=1976396145]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Browse"
+
+[node name="Label2" type="Label" parent="VBoxContainer" unique_id=1368872475]
+layout_mode = 2
+text = "Output Image path"
+
+[node name="Output" type="HBoxContainer" parent="VBoxContainer" unique_id=1906216215]
+layout_mode = 2
+
+[node name="OutputLineEdit" type="LineEdit" parent="VBoxContainer/Output" unique_id=1387643119]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="OutputButton" type="Button" parent="VBoxContainer/Output" unique_id=1445183206]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Browse"
+
+[node name="Label3" type="Label" parent="VBoxContainer" unique_id=1204514745]
+layout_mode = 2
+text = "LUT resolution"
+
+[node name="LUTResolutionInput" type="SpinBox" parent="VBoxContainer" unique_id=2032262549]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 255.0
+value = 64.0
+rounded = true
+allow_greater = true
+alignment = 1
+
+[node name="GenerateButton" type="Button" parent="VBoxContainer" unique_id=792592233]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Generate LUT"
+
+[node name="InputFileDialog" type="FileDialog" parent="." unique_id=707882049]
+unique_name_in_owner = true
+title = "Open a File"
+file_mode = 0
+filters = PackedStringArray("*.png, *.jpg, *.jpeg, *.webp ; Images")
+
+[node name="OutputFileDialog" type="FileDialog" parent="." unique_id=799788203]
+unique_name_in_owner = true
+filters = PackedStringArray("*.tres ; TRES", "*.res ; RES")
