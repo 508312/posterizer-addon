@@ -72,9 +72,9 @@ albedo_color = Color(1, 0.4862745, 1, 1)
 
 [node name="Node3D" type="Node3D" unique_id=1355957724]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=218838158]
+[node name="2d canvas shaders" type="CanvasLayer" parent="." unique_id=218838158]
 
-[node name="fr" type="ColorRect" parent="CanvasLayer" unique_id=1686625801]
+[node name="fr" type="ColorRect" parent="2d canvas shaders" unique_id=1686625801]
 material = SubResource("ShaderMaterial_mjlwq")
 anchors_preset = 15
 anchor_right = 1.0
@@ -82,7 +82,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="lut" type="ColorRect" parent="CanvasLayer" unique_id=1248404304]
+[node name="lut" type="ColorRect" parent="2d canvas shaders" unique_id=1248404304]
 visible = false
 material = SubResource("ShaderMaterial_2netj")
 anchors_preset = 15
@@ -91,18 +91,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1351296042]
+[node name="3d post process shaders" type="Camera3D" parent="." unique_id=1351296042]
 transform = Transform3D(0.99534976, -0.0019407794, 0.09630735, 0.013429966, 0.99282825, -0.11879314, -0.0953861, 0.119534135, 0.9882374, 0.7762635, 0.85685194, 2.9063766)
 fov = 64.9
 
-[node name="fr" type="MeshInstance3D" parent="Camera3D" unique_id=1669373396]
+[node name="fr" type="MeshInstance3D" parent="3d post process shaders" unique_id=1669373396]
 transform = Transform3D(1, 0, 7.450581e-09, 0, 1, -7.450581e-09, 0, 0, 0.99999994, 0, 0, -0.099999905)
 visible = false
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_uhqqe")
 surface_material_override/0 = SubResource("ShaderMaterial_tsylx")
 
-[node name="lut" type="MeshInstance3D" parent="Camera3D" unique_id=1130753344]
+[node name="lut" type="MeshInstance3D" parent="3d post process shaders" unique_id=1130753344]
 transform = Transform3D(1, 0, 7.450581e-09, 0, 1, -2.2351742e-08, 0, 0, 0.99999994, 0, -3.5762787e-07, -0.10000038)
 visible = false
 mesh = SubResource("QuadMesh_uhqqe")
