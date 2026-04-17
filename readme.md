@@ -15,8 +15,9 @@ Install this addon either in the AssetLib or under the github releases. The addo
 	2. Use `posterizer_slow_fullres(_canvas).gdshader` with the image and a standart godot post process shader setup.
 
 - **"My color pallete is big/I want maximal performance"**:
-	1. In the center bottom dock find the "PosterizerLutGenerator" tab and generate LUT for your color pallete.
-	2. Use `posterizer_lut(_canvas).gdshader` with the generated LUT and standart godot post process shader setup.
+  	1. Enable the plugin in the project settings.
+	2. In the center bottom dock find the "PosterizerLutGenerator" tab and generate LUT for your color pallete.
+  	3. Use `posterizer_lut(_canvas).gdshader` with the generated LUT and standart godot post process shader setup.
 
 - **"I want to use posterization functions inside of my shader"**:
 	- Just include `posterizer_funcs.gdshaderinc` and use the function you need. Be sure to look at them to know what color space to use. Helper methods for color space transitions can be found in `posterizer_color_conversion_helpers.gdshaderinc`
