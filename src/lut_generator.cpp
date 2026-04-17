@@ -1,3 +1,4 @@
+//License: MIT - Copyright (c) [2026] [508312|https://github.com/508312/posterizer-addon]
 #include "lut_generator.hpp"
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/typed_array.hpp>
@@ -18,11 +19,11 @@ PosterizerLUTGeneratorCPP::~PosterizerLUTGeneratorCPP() {
 }
 
 void PosterizerLUTGeneratorCPP::_bind_methods() {
-    ClassDB::bind_method(D_METHOD("generate_lut", "image", "width", "height", "depth"), &PosterizerLUTGeneratorCPP::generate_lut);
+    ClassDB::bind_method(D_METHOD("generate_lut", "image", "width", "height", "depth"), &PosterizerLUTGeneratorCPP::generate_lut_multithreaded);
     ClassDB::bind_method(D_METHOD("generate_lut_single_threaded", "image", "width", "height", "depth"), &PosterizerLUTGeneratorCPP::generate_lut_single_threaded);
 }
 
-// Potential mimatch with gdscript because gdscript version is doubles by default? Should be impreceptible.
+// Potential mimatch with gdscript because gdscript version is doubles by default(truncated at Vector3 step)? Should be impreceptible.
 Vector3 PosterizerLUTGeneratorCPP::linear_srgb_to_oklab(Color c) {
     float l = 0.4122214708f * c.r + 0.5363325363f * c.g + 0.0514459929f * c.b;
     float m = 0.2119034982f * c.r + 0.6806995451f * c.g + 0.1073969566f * c.b;
@@ -43,7 +44,6 @@ Vector3 PosterizerLUTGeneratorCPP::linear_srgb_to_oklab(Color c) {
 // Possible to get rid of height width and depth thingies. Mb later, but its really nbd.
 // Creates 1 layer of 3D LUT.
 void PosterizerLUTGeneratorCPP::_process_depth_layer(int b, int width, int height, int depth, TypedArray<Image> layers, Image::Format format) {
-	layers[b] = Image::create(width, height, false, format);
 	Ref<Image> img = layers[b];
 	for (int g = 0; g < height; ++g) {
 		for (int r = 0; r < width; ++r) {
@@ -52,7 +52,7 @@ void PosterizerLUTGeneratorCPP::_process_depth_layer(int b, int width, int heigh
 				(b + 0.5f) / depth);
 
 			Color palette_color = find_closest_palette_color(srgb_color.srgb_to_linear());
-			img->set_pixel(r, g, palette_color);
+            img->set_pixel(r, g, palette_color);
 		}
 	}
 }
@@ -66,12 +66,9 @@ Ref<ImageTexture3D> PosterizerLUTGeneratorCPP::generate_lut(int width, int heigh
     Callable task_callable = callable_mp(this, &PosterizerLUTGeneratorCPP::_process_depth_layer);
 
     if (enable_multithreading) {
-        std::vector<int> b_vec(depth);
-        iota(b_vec.begin(), b_vec.end(), 0);
-        //std::for_each(std::execution::par, b_vec.begin(), b_vec.end(), [&](int b) { _process_depth_layer(b, width, height, depth, layers, format);});
-        
         std::vector<int64_t> id_vec(depth);
         for (int b = 0; b < depth; ++b) {
+	        layers[b] = Image::create(width, height, false, format);
             int64_t task_id = WorkerThreadPool::get_singleton()->add_task(task_callable.bind(b, width, height, depth, layers, format));
             id_vec[b] = task_id;
         }

@@ -1,3 +1,4 @@
+#License: MIT - Copyright (c) [2026] [508312|https://github.com/508312/posterizer-addon]
 class_name PosterizerLUTGeneratorGDScript extends RefCounted
 
 var palette_image: Image
@@ -76,19 +77,12 @@ func _generate_lut_single_threaded(width:int, height:int, depth:int) -> ImageTex
 # They seem to execute the inner loop literally 10x slower for whatever reason.
 # Thread creation is not the bottleneck. Performance of the inner loop on generated threads is.
 # I reckon it would have been good enough for 256LUT if this worked. 
-# Too lazy to write gdextension/c script for lut generation. Sorry >:P
-func _generate_lut_multi_threaded(nthreads: int, width:int, height:int, depth:int) -> ImageTexture3D:
-	assert(depth%nthreads == 0)
-	
+# Too lazy to write gdextension/c script for lut generation. Sorry >:P. Not too lazy after all >:)
+func _generate_lut_multi_threaded(width:int, height:int, depth:int) -> ImageTexture3D:
 	var format := Image.FORMAT_RGB8
 	
 	var layers: Array[Image] = []
 	layers.resize(depth)
-	
-	var threads: Array[Thread] = []
-	for i in range(nthreads):
-		threads.append(Thread.new())
-	
 	
 	# ugly ass lambda not to pollute the class space
 	var inner_loop := func (b: int, img: Image) -> void:
@@ -108,14 +102,15 @@ func _generate_lut_multi_threaded(nthreads: int, width:int, height:int, depth:in
 		
 	_generate_oklab_palette()
 	
-	for b_start in range(depth / nthreads):
-		for t in range(nthreads):
-			var img := Image.create(width, height, false, format)
-			threads[t].start(inner_loop.bind(b_start + t, img))
-		
-		for t in range(nthreads):	
-			threads[t].wait_to_finish()
-		
+	var task_ids: Array[int] = []
+	task_ids.resize(depth);
+	
+	for b in range(depth):
+		var img := Image.create(width, height, false, format)
+		task_ids[b] = WorkerThreadPool.add_task(inner_loop.bind(b, img))
+	
+	for b in range(depth):
+		WorkerThreadPool.wait_for_task_completion(task_ids[b])
 	
 	var tex3d := ImageTexture3D.new()
 	var err := tex3d.create(format, width, height, depth, false, layers)

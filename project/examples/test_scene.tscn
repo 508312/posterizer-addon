@@ -1,22 +1,59 @@
 [gd_scene format=3 uid="uid://47ml7d43wemd"]
 
-[ext_resource type="Material" uid="uid://diek7q6d3ui13" path="res://examples/test_mat_fullres.tres" id="1_g3kdf"]
-[ext_resource type="Material" uid="uid://c62g111ixbsit" path="res://examples/test_mat_lut.tres" id="1_iqljj"]
 [ext_resource type="Shader" uid="uid://ci4627oqeoncj" path="res://addons/posterizer/src/posterizer_slow_fullres_canvas.gdshader" id="1_mjlwq"]
 [ext_resource type="PackedScene" uid="uid://bh0ltk032ullu" path="res://examples/japanese_forest/scene.gltf" id="2_r0otj"]
 [ext_resource type="Shader" uid="uid://bixg1gro3b067" path="res://addons/posterizer/src/posterizer_lut_canvas.gdshader" id="3_5hm8q"]
-[ext_resource type="ImageTexture3D" uid="uid://cmtarqoafs7jb" path="res://examples/crashtest.tres" id="4_nu2q2"]
+[ext_resource type="Shader" uid="uid://c2sgalg0ecfx3" path="res://addons/posterizer/src/posterizer_slow_fullres.gdshader" id="3_mjlwq"]
+[ext_resource type="Shader" uid="uid://c56xl4pigclit" path="res://addons/posterizer/src/posterizer_lut.gdshader" id="4_nu2q2"]
+[ext_resource type="ImageTexture3D" uid="uid://cs2dye8rqavpe" path="res://examples/LUT64-oil-6.tres" id="5_nu2q2"]
+[ext_resource type="Script" uid="uid://vw1u64qxiigi" path="res://examples/screenshotter.gd" id="7_nu2q2"]
+
+[sub_resource type="Image" id="Image_nu2q2"]
+data = {
+"data": PackedByteArray(251, 245, 239, 255, 242, 211, 171, 255, 198, 159, 165, 255, 139, 109, 156, 255, 73, 77, 126, 255, 39, 39, 68, 255),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 6
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_2netj"]
+image = SubResource("Image_nu2q2")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mjlwq"]
 shader = ExtResource("1_mjlwq")
+shader_parameter/palette_texture = SubResource("ImageTexture_2netj")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2netj"]
 shader = ExtResource("3_5hm8q")
-shader_parameter/palette_lut = ExtResource("4_nu2q2")
+shader_parameter/palette_lut = ExtResource("5_nu2q2")
 
 [sub_resource type="QuadMesh" id="QuadMesh_uhqqe"]
 flip_faces = true
 size = Vector2(2, 2)
+
+[sub_resource type="Image" id="Image_2netj"]
+data = {
+"data": PackedByteArray(251, 245, 239, 255, 242, 211, 171, 255, 198, 159, 165, 255, 139, 109, 156, 255, 73, 77, 126, 255, 39, 39, 68, 255),
+"format": "RGBA8",
+"height": 1,
+"mipmaps": false,
+"width": 6
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_ynip6"]
+image = SubResource("Image_2netj")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tsylx"]
+render_priority = 0
+shader = ExtResource("3_mjlwq")
+shader_parameter/palette_texture = SubResource("ImageTexture_ynip6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_otmk5"]
+render_priority = 0
+shader = ExtResource("4_nu2q2")
+shader_parameter/palette_lut = ExtResource("5_nu2q2")
+shader_parameter/specular_highlights_power = 1.0
 
 [sub_resource type="Environment" id="Environment_g3kdf"]
 background_mode = 1
@@ -38,7 +75,6 @@ albedo_color = Color(1, 0.4862745, 1, 1)
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=218838158]
 
 [node name="fr" type="ColorRect" parent="CanvasLayer" unique_id=1686625801]
-visible = false
 material = SubResource("ShaderMaterial_mjlwq")
 anchors_preset = 15
 anchor_right = 1.0
@@ -64,13 +100,13 @@ transform = Transform3D(1, 0, 7.450581e-09, 0, 1, -7.450581e-09, 0, 0, 0.9999999
 visible = false
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_uhqqe")
-surface_material_override/0 = ExtResource("1_g3kdf")
+surface_material_override/0 = SubResource("ShaderMaterial_tsylx")
 
 [node name="lut" type="MeshInstance3D" parent="Camera3D" unique_id=1130753344]
 transform = Transform3D(1, 0, 7.450581e-09, 0, 1, -2.2351742e-08, 0, 0, 0.99999994, 0, -3.5762787e-07, -0.10000038)
 visible = false
 mesh = SubResource("QuadMesh_uhqqe")
-surface_material_override/0 = ExtResource("1_iqljj")
+surface_material_override/0 = SubResource("ShaderMaterial_otmk5")
 
 [node name="Sketchfab_Scene" parent="." unique_id=1454471119 instance=ExtResource("2_r0otj")]
 transform = Transform3D(1, 2.3283064e-10, 4.656613e-10, -4.656613e-10, 0.9999999, -2.9802322e-08, -4.656613e-10, 2.9802322e-08, 1, 0, 0, 0)
@@ -90,7 +126,7 @@ omni_range = 11.266326
 environment = SubResource("Environment_g3kdf")
 
 [node name="sphere" type="MeshInstance3D" parent="." unique_id=1693776000]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5439408, 2.089257, -1.8271288)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4651556, 2.418485, -1.491644)
 mesh = SubResource("SphereMesh_uhqqe")
 surface_material_override/0 = SubResource("StandardMaterial3D_ia1lp")
 
@@ -98,3 +134,6 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ia1lp")
 transform = Transform3D(0.6746439, -0.5324442, -0.51123273, -0.074665464, 0.6398153, -0.7648934, 0.7343574, 0.5542021, 0.39189225, 2.9590266, 2.0676274, -1.2320604)
 mesh = SubResource("TorusMesh_g3kdf")
 surface_material_override/0 = SubResource("StandardMaterial3D_mjlwq")
+
+[node name="screenshotter" type="Node" parent="." unique_id=179321389]
+script = ExtResource("7_nu2q2")

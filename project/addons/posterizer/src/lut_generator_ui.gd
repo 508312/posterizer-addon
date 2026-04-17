@@ -1,3 +1,4 @@
+#License: MIT - Copyright (c) [2026] [508312|https://github.com/508312/posterizer-addon]
 @tool
 extends Control
 
@@ -48,7 +49,7 @@ func _on_process_pressed():
 	
 	var resolution := int(lut_resolution_input.value)
 	# Use GDScript if CPP fails
-	#var generatorGDScript := PosterizerLUTGeneratorGDScript.new()
+	# var generatorGDScript := PosterizerLUTGeneratorGDScript.new()
 	var generatorCPP := PosterizerLUTGeneratorCPP.new()
 	
 	# Is this horrible?
@@ -58,11 +59,8 @@ func _on_process_pressed():
 	await get_tree().process_frame
 	
 	var time := Time.get_ticks_msec()
-	#var lut := generatorCPP.generate_lut_single_threaded(img, resolution, resolution, resolution)
-	#print("st took ", Time.get_ticks_msec() - time)
-	time = Time.get_ticks_msec()
 	var lut := generatorCPP.generate_lut(img, resolution, resolution, resolution)
-	print("mt took ", Time.get_ticks_msec() - time)
+	#print("LUT generation took,", Time.get_ticks_msec() - time)
 	
 	generate_button.text = "Generate LUT"
 	generate_button.disabled = false

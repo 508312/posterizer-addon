@@ -1,3 +1,5 @@
+//License: MIT - Copyright (c) [2026] [508312|https://github.com/508312/posterizer-addon]
+
 // Adapted from https://github.com/godotengine/godot/blob/master/core/math/color.h
 // Not needed. Shaders are already linear.
 vec3 srgb_to_linear(vec3 color) {
@@ -36,4 +38,23 @@ vec3 linear_srgb_to_oklab(vec3 c) {
 
 vec3 srgb_to_oklab(vec3 color) {
 	return linear_srgb_to_oklab(srgb_to_linear(color));
+}
+
+// Remaps color to be in 0.0-1.0 range. Loses hue, shifts it towards white. Blowout power determines strength of the effect.
+// An alternative is to scale down to non hdr range, but then specular highlights are lost.
+vec3 remap_hdr(vec3 color, float blowout_power) {
+	float max_val = max(color.r, max(color.g, color.b));
+	vec3 mapped_color = color;
+    if (max_val > 1.0) {
+        vec3 scaled = color / max_val;
+        float base_blowout = 1.0 - (1.0 / max_val);
+		
+		float blowout = pow(base_blowout, blowout_power);
+        mapped_color = mix(scaled, vec3(1.0), blowout);
+    }
+	return mapped_color;
+}
+
+vec3 remap_hdr(vec3 color) {
+	return remap_hdr(color, 1.5);
 }

@@ -1,3 +1,4 @@
+//License: MIT - Copyright (c) [2026] [508312|https://github.com/508312/posterizer-addon]
 #pragma once
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/classes/image.hpp>
