@@ -6,8 +6,8 @@ reloadable = true
 
 [libraries]
 
-macos.debug = "bin/libgdposterizelutgenerator.macos.template_debug.framework"
-macos.release = "bin/libgdposterizelutgenerator.macos.template_release.framework"
+macos.debug = "bin/libgdposterizelutgenerator.macos.template_debug.universal.framework"
+macos.release = "bin/libgdposterizelutgenerator.macos.template_release.universal.framework"
 ios.debug = "bin/libgdposterizelutgenerator.ios.template_debug.xcframework"
 ios.release = "bin/libgdposterizelutgenerator.ios.template_release.xcframework"
 windows.debug.x86_32 = "bin/libgdposterizelutgenerator.windows.template_debug.x86_32.dll"

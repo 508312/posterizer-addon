@@ -1,9 +1,11 @@
-# Posterizer addon
+# Posterizer addon for godot
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
 
 Godot addon to snap colors to a pallete.
+Was built and tested on godot version 4.6
+Please note that linux and mac versions of the LUT generator haven't been tested by me. If they do not work, refer to the FAQ section on how to fix the generator.
 
 ## Quick start
 Install this addon either in the AssetLib or under the github releases. The addon should be in the `addons/posterizer` folder in your project.
