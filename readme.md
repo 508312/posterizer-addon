@@ -56,6 +56,11 @@ LUT is fast and works on arbitrairly large color palletes in O(1) time. Fullres 
 - Because LUT expects values in the 0.0-1.0 range the HDR range might not be reflected as accurately as in the fullres shader. I preserve specular highlights with `remap_hdr` I wrote, it moves hue closer to white, but preserves specular highlights. `blowout_power` parameter can be tweaked so the effects look good with your specific pallete. If you absolutely want fully accurate specular highlight, but fullres is too slow, then you can write a gdscript to precalculate your palette image into OKLAB color space, check the gdscript lut generator code for conversion functions. This will save on some processing power, since you wont need to convert every pixel in the color palette into OKLAB.
 - Code turned out not to be so beginner friendly, everything is all over the place :p.
 - I think palletizer is a more appropriate name. Posterizer might imply automatic palette creation. Well I'm not renaming stuff because im lazy.
+- Debug and editor libraries point to release binary not to bloat addon size.
+
+## Compiling from source/Development:
+Follow the default godot instructions to compile from source using scons. You might want to edit `project\addons\posterizer` debug and editor libraries to point at a debug template build, so you get proper debugging/error messages.
+
 ## Credits
 Code by me, 508312
 
